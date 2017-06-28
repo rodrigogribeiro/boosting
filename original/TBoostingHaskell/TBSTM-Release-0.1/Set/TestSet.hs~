@@ -1,0 +1,93 @@
+module Main where
+
+import Control.Concurrent
+import Control.Concurrent.MVar
+import System.Time
+import System.Environment
+import System.Random
+import Data.List
+--import Control.Concurrent.STM
+--import STMSet
+import TBList
+
+data Ops = Contains Int | Remove Int | Add Int
+
+createSet :: ListHandle Int -> Int -> Int -> IO ()
+createSet set range 0 = return ()
+createSet set range n = do
+	v<-randomRIO (1, range)
+	ok <- add set v
+	case ok of
+		True -> createSet set range (n-1)
+		False -> createSet set range n
+
+genListOps :: Int -> Int -> IO [Ops]
+genListOps range 0 = return []
+genListOps range size = do
+	op <- randomRIO (1,5::Int)
+	val <- randomRIO (1,range)
+	list <- genListOps range (size-1)
+	case op of
+		1 -> return (Contains val:list) 
+		2 -> return (Contains val:list)
+		3 -> return (Contains val:list)	
+		4 -> return (Remove val:list)	
+		5 -> return (Add val:list)
+
+
+
+genListOps2 :: Int -> Int -> IO [Ops]
+genListOps2 range 0 = return []
+genListOps2 range size = do
+	op <- randomRIO (1,6::Int)
+	val <- randomRIO (1,range)
+	list <- genListOps2 range (size-1)
+	case op of
+		1 -> return (Contains val:list) 
+		2 -> return (Contains val:list)
+		3 -> return (Remove val:list)	
+		4 -> return (Remove val:list)	
+		5 -> return (Add val:list)
+		6 -> return (Add val:list)
+
+
+
+main = do
+	set <- newList
+	args <- getArgs
+	let range = read (args!!0)
+	let size = read (args!!1)
+	let ops = read (args !!2)	
+	let nthreads = read (args !! 3)
+	let heavy = read (args !! 4)
+	createSet set range size
+	mvar <- newEmptyMVar
+	listOps <- (if heavy == 0 
+		then mapM (\nops -> genListOps range nops) (replicate nthreads ops)
+		else mapM (\nops -> genListOps2 range nops) (replicate nthreads ops))	
+	putStrLn "Start"
+     	timeStart <- getClockTime
+	mapM (\ lops -> forkIO (thread set mvar lops)) listOps
+	mapM takeMVar (replicate nthreads mvar)
+	timeEnd <- getClockTime	
+	putStrLn "Done"
+	let diff = (normalizeTimeDiff (diffClockTimes timeEnd timeStart))
+	print ("#"++show((((fromIntegral(tdPicosec diff))/(10^12))) + (fromIntegral((tdSec diff) + (60 * (tdMin diff)) + (3600 * (tdHour diff))))))
+
+		
+thread :: ListHandle Int -> MVar () -> [Ops]-> IO ()
+thread set mvar [] = putMVar mvar ()
+thread set mvar (op:xs) = do
+	case op of
+		Contains val-> do
+			_<-contains set val  
+			thread set mvar xs 
+		Remove val -> do
+			_<-remove set val
+			thread set mvar xs
+		Add val -> do
+			_<- add set val 
+			thread set mvar xs
+
+
+

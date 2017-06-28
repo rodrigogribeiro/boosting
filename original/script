@@ -1,0 +1,16 @@
+#!/bin/bash
+if [ $# -lt 1 ]
+then
+  echo Syntax: sblpSources submission_number
+  exit 1
+else
+  pdflatex paper.tex;
+  bibtex paper;
+  pdflatex paper.tex;
+  pdflatex paper.tex;
+  cd ../
+  zipname="SBLP14_$1.tgz"
+  foldername="SBLP14_$1"
+  tar -cvzf $zipname $foldername
+  echo "Generated $zipname"
+fi

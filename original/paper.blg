@@ -1,0 +1,55 @@
+This is BibTeX, Version 0.99c (TeX Live 2009/Debian)
+The top-level auxiliary file: paper.aux
+The style file: abbrv.bst
+Database file #1: paper.bib
+Repeated entry---line 305 of file paper.bib
+ : %@inproceedings{twilight
+ :                         ,
+I'm skipping whatever remains of this entry
+Warning--to sort, need author or key in casioref
+Warning--to sort, need author or key in pdqueue
+Warning--to sort, need author or key in stmbench
+Warning--to sort, need author or key in tl2stmhaskell
+Warning--empty publisher in htm
+You've used 18 entries,
+            2118 wiz_defined-function locations,
+            598 strings with 6078 characters,
+and the built_in function-call counts, 5799 in all, are:
+= -- 588
+> -- 198
+< -- 8
++ -- 82
+- -- 62
+* -- 331
+:= -- 868
+add.period$ -- 59
+call.type$ -- 18
+change.case$ -- 81
+chr.to.int$ -- 0
+cite$ -- 23
+duplicate$ -- 272
+empty$ -- 543
+format.name$ -- 62
+if$ -- 1329
+int.to.chr$ -- 0
+int.to.str$ -- 18
+missing$ -- 14
+newline$ -- 89
+num.names$ -- 28
+pop$ -- 130
+preamble$ -- 1
+purify$ -- 64
+quote$ -- 0
+skip$ -- 204
+stack$ -- 0
+substring$ -- 299
+swap$ -- 84
+text.length$ -- 8
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 70
+warning$ -- 5
+while$ -- 48
+width$ -- 20
+write$ -- 193
+(There was 1 error message)

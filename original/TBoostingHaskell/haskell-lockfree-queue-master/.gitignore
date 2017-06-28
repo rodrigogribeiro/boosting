@@ -1,0 +1,8 @@
+dist/
+cabal-dev/
+*~
+*#
+*.exe
+*.hi
+*.o
+*onflict*

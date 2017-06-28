@@ -1,0 +1,50 @@
+Name:                mega-deque
+Version:             0.1
+License:             BSD3
+License-file:        LICENSE
+Author:              Ryan R. Newton
+Maintainer:          rrnewton@gmail.com
+Category:            Data
+Build-type:          Simple
+Cabal-version:       >=1.2
+
+Homepage: https://github.com/rrnewton/haskell-lockfree-queue/wiki
+
+Synopsis: Collects together queue packages and selects the right one based on a type family.
+
+Description:
+
+  This module aggregates other queue implementations into a single, parameterizable implementation which
+
+   * single, 1.5, and double-ended queues 
+   * bounded / unbounded capacity
+   * "safe" or potentially duplicating of elements (e.g. Idempotent Work-stealing)
+
+
+Library
+  exposed-modules:   Data.Concurrent.MegaDeque
+  build-depends:     base >= 4.6.0.0,
+                     abstract-deque,
+                     lockfree-queue,
+                     chaselev-deque
+  ghc-options: -O2
+
+
+Test-Suite test-chaselev-deque
+    type:       exitcode-stdio-1.0
+    main-is:    Test.hs
+    build-depends:  base >= 4.6.0.0,
+                    abstract-deque,
+                    lockfree-queue,
+                    chaselev-deque,
+                    HUnit
+--    base >= 4.4.0.0 && < 5, abstract-deque, 
+--                   HUnit, test-framework, test-framework-hunit,
+--                   atomic-primops, 
+--                   IORefCAS >= 0.2
+    build-depends: containers
+    ghc-options: -O2 -threaded -rtsopts 
+
+Source-Repository head
+    Type:         git
+    Location:     git://github.com/rrnewton/haskell-lockfree-queue.git

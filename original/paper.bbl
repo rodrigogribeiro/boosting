@@ -1,0 +1,104 @@
+\begin{thebibliography}{10}
+
+\bibitem{stmbench}
+{The Haskell STM Benchmark}.
+\newblock WWW page, http://www.bscmsrc.eu/software/haskell-stm-benchmark,
+  October 2010.
+
+\bibitem{tl2stmhaskell}
+{TL2 STM Haskell}.
+\newblock http://sites.google.com/site/tl2stmhaskell/STM.hs, Feb 2011.
+
+\bibitem{casioref}
+{Data.CAS}.
+\newblock
+  http://hackage.haskell.org/package/IORefCAS-0.1.0.1/docs/src/Data-CAS.html,
+  October 2013.
+
+\bibitem{pdqueue}
+{Thread Safe Deque}.
+\newblock https://github.com/rrnewton/haskell-lockfree, October 2013.
+
+\bibitem{twilight}
+A.~Bieniusa et~al.
+\newblock {Twilight in Haskell: Software Transactional Memory with Safe I/O and
+  Typed Conflict Management}.
+\newblock In {\em IFL 2010}, sep 2010.
+
+\bibitem{tl2}
+D.~Dice, O.~Shalev, and N.~Shavit.
+\newblock Transactional locking {II}.
+\newblock In {\em DISC 2006}, pages 194--208, 2006.
+
+\bibitem{paper:tl2stmhaskell}
+A.~R. {Du Bois}.
+\newblock An implementation of composable memory transactions in {Haskell}.
+\newblock In {\em Software Composition 2011}, LNCS 6708, Swtzerland, 2011.
+  Springer-Verlag.
+
+\bibitem{ennals}
+R.~Ennals.
+\newblock Software transactional memory should not be obstruction-free.
+\newblock Technical Report IRC-TR-06-052, Intel Research Cambridge Tech Report,
+  Jan 2006.
+
+\bibitem{stmbook2}
+T.~Harris, J.~R. Larus, and R.~Rajwar.
+\newblock {\em Transactional Memory, 2nd edition}.
+\newblock Synthesis Lectures on Computer Architecture. Morgan {\&} Claypool
+  Publishers, 2010.
+
+\bibitem{smtphaskell}
+T.~Harris, S.~Marlow, and S.~{Peyton Jones}.
+\newblock Haskell on a shared-memory multiprocessor.
+\newblock In {\em Haskell Workshop 2005}, pages 49--61. ACM Press, September
+  2005.
+
+\bibitem{stmhaskell}
+T.~Harris, S.~Marlow, S.~Peyton~Jones, and M.~Herlihy.
+\newblock Composable memory transactions.
+\newblock In {\em PPoPP'05}. ACM Press, 2005.
+
+\bibitem{tboosting}
+M.~Herlihy and E.~Koskinen.
+\newblock Transactional boosting: a methodology for highly-concurrent
+  transactional objects.
+\newblock In {\em PPoPP}, pages 207--216. ACM, 2008.
+
+\bibitem{htm}
+M.~Herlihy and J.~E.~B. Moss.
+\newblock Transactional memory: Architectural support for lock-free data
+  structures.
+\newblock In {\em ISCA}, pages 289--300. May 1993.
+
+\bibitem{stmch}
+F.~Huch and F.~Kupke.
+\newblock A high-level implementation of composable memory transactions in
+  concurrent {H}askell.
+\newblock In {\em IFL}, pages 124--141, 2005.
+
+\bibitem{opennesting}
+Y.~Ni et~al.
+\newblock Open nesting in software transactional memory.
+\newblock In {\em PPoPP}, pages 68--78. ACM, 1 2007.
+
+\bibitem{tackling}
+S.~Peyton~Jones.
+\newblock Tackling the awkward squad: monadic input/output, concurrency,
+  exceptions, and foreign-language calls in {H}askell.
+\newblock In {\em Engineering theories of software construction}, pages 47--96.
+  IOS Press, 2001.
+
+\bibitem{unreadtvar}
+N.~Sonmez et~al.
+\newblock Unreadtvar: Extending {H}askell software transactional memory for
+  performance.
+\newblock In {\em Trends in Functional Programming}. Intellect Books, 2008.
+
+\bibitem{linkedlist}
+M.~Sulzmann, E.~S. Lam, and S.~Marlow.
+\newblock Comparing the performance of concurrent linked-list implementations
+  in {H}askell.
+\newblock {\em SIGPLAN Not.}, 44(5):11--20, 2009.
+
+\end{thebibliography}

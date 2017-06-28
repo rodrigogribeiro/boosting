@@ -1,0 +1,16 @@
+module ProducerConsumer where
+
+
+
+main = do
+	f <- newFifo
+	forkIO $ producer q
+	forkIO $ consumer q
+
+producer q = do
+	v <- produce
+	writeFifo q v
+
+consumer q = do
+	v <- readFifo q
+	consume v

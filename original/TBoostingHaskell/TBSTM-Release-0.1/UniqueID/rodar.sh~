@@ -1,0 +1,2 @@
+echo ./MainT $1 $2 1 +RTS -N$2 -H200M -K400M -RTS
+./MainT $1 $2 1 +RTS -N$2 -H200M -K400M -RTS

@@ -1,0 +1,2 @@
+echo ./ProducerConsumer +RTS -N2 -RTS
+./ProducerConsumer +RTS -N2 -RTS

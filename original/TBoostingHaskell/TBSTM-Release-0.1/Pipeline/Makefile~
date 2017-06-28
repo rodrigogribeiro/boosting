@@ -1,0 +1,7 @@
+Maint: ProducerConsumer.hs
+	ghc --make ProducerConsumer.hs -threaded -rtsopts -O
+
+clean:
+	rm *.hi
+	rm *.o
+	rm ProducerConsumer

@@ -1,0 +1,10 @@
+module FifoSTM where
+
+import Control.Concurrent.STM
+import Control.Concurrent.STM.TChan
+
+newFifo = newTChanIO
+
+writeFifo = atomically $ writeTChan
+
+readFifo = atomically $ readTChan 

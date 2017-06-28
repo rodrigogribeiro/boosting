@@ -1,0 +1,2 @@
+echo ./TestSet 100000 2000 2000 8 $2 +RTS -N$1 -RTS
+./TestSet 100000 2000 2000 8 $2 +RTS -N$1 -RTS

@@ -1,0 +1,142 @@
+
+#include "Cmm.h"
+
+#warning "Duplicating functionality from the GHC RTS..."
+#define WHICH_CAS       DUP_cas
+#define WHICH_SLBARRIER DUP_store_load_barrier
+#define WHICH_LLBARRIER DUP_load_load_barrier
+#define WHICH_WBARRIER  DUP_write_barrier
+
+/* #define WHICH_CAS       cas */
+/* #define WHICH_SLBARRIER store_load_barrier */
+/* #define WHICH_LLBARRIER load_load_barrier */
+/* #define WHICH_WBARRIER  write_barrier */
+
+// ================================================================================
+
+add1Op
+/* Int# -> Int# */
+{
+    W_ num;
+    num = R1 + 1;
+    RET_P(num);
+}
+
+
+stg_casArrayzh
+/* MutableArray# s a -> Int# -> a -> a -> State# s -> (# State# s, Int#, a #) */
+{
+    W_ arr, p, ind, old, new, h, len;
+    arr = R1; // anything else?
+    ind = R2;
+    old = R3;
+    new = R4;
+
+    p = arr + SIZEOF_StgMutArrPtrs + WDS(ind);
+    (h) = foreign "C" WHICH_CAS(p, old, new) [];
+    
+    if (h != old) {
+        // Failure, return what was there instead of 'old':
+        RET_NP(1,h);
+    } else {
+        // Compare and Swap Succeeded:
+	SET_HDR(arr, stg_MUT_ARR_PTRS_DIRTY_info, CCCS);
+	len = StgMutArrPtrs_ptrs(arr);
+	// The write barrier.  We must write a byte into the mark table:
+	I8[arr + SIZEOF_StgMutArrPtrs + WDS(len) + (ind >> MUT_ARR_PTRS_CARD_BITS )] = 1;
+        RET_NP(0,h);
+    }
+}
+
+
+stg_casByteArrayIntzh
+/* MutableByteArray# s -> Int# -> Int# -> Int# -> State# s -> (# State# s, Int# #) */
+{
+    W_ arr, p, ind, old, new, h, len;
+    arr = R1; 
+    ind = R2;
+    old = R3;
+    new = R4;
+
+    p = arr + SIZEOF_StgArrWords + WDS(ind);
+    (h) = foreign "C" WHICH_CAS(p, old, new) [];
+
+    RET_N(h);
+}
+
+stg_fetchAddByteArrayIntzh
+/* MutableByteArray# s -> Int# -> Int# -> State# s -> (# State# s, Int# #) */
+{
+    W_ arr, p, ind, incr, h, len;
+    arr  = R1; 
+    ind  = R2;
+    incr = R3;
+
+    p = arr + SIZEOF_StgArrWords + WDS(ind);
+    (h) = foreign "C" atomic_inc_with(incr, p) [];
+
+    RET_N(h);
+}
+
+
+// One difference from casMutVar# is that this version returns the NEW
+// pointer in the case of success, NOT the old one.
+stg_casMutVar2zh
+ /* MutVar# s a -> Word# -> a -> State# s -> (# State#, Int#, a #) */
+{
+    W_ mv, old, new, h;
+    // Calling convention: Up to 8 registers contain arguments.
+    mv  = R1;
+    old = R2;
+    new = R3;
+
+    // The "cas" function from the C runtime abstracts over
+    // platform/architecture differences.  It returns the old value,
+    // which, if equal to "old", means success.
+    (h) = foreign "C" WHICH_CAS(mv + SIZEOF_StgHeader + OFFSET_StgMutVar_var,
+                          old, new) [];
+    if (h != old) {
+        // Failure:
+        RET_NP(1,h);
+    } else {
+        // Success means a mutation and thus GC write barrier:
+        if (GET_INFO(mv) == stg_MUT_VAR_CLEAN_info) {
+           foreign "C" dirty_MUT_VAR(BaseReg "ptr", mv "ptr") [];
+        }
+	// Return the NEW value as the ticket for next time.
+        RET_NP(0,new);
+    }
+}
+
+
+// Takes a single input argument in R1:
+stg_readMutVar2zh
+/*  MutVar# RealWorld a -> State# RealWorld -> (# State# RealWorld, Word#, a #) */
+{
+    W_ mv, res;
+    mv  = R1;
+    // Do the actual read:
+    res = W_[mv + SIZEOF_StgHeader + OFFSET_StgMutVar_var];
+    RET_NP(res, res);
+}
+/* emitPrimOp [res] ReadMutVarOp [mutv] _ */
+/*    = stmtC (CmmAssign (CmmLocal res) (cmmLoadIndexW mutv fixedHdrSize gcWord)) */
+
+
+// This is already existing functionality in the RTS (SMP.h).  It
+// handles the complexity of architecture-portability.  We just need
+// to expose it here.
+stg_store_load_barrier {
+    foreign "C" WHICH_SLBARRIER();
+    RET_N(0);
+}
+
+stg_load_load_barrier {
+    foreign "C" WHICH_LLBARRIER();
+    RET_N(0);
+}
+
+stg_write_barrier {
+    foreign "C" WHICH_WBARRIER();
+    RET_N(0);
+}
